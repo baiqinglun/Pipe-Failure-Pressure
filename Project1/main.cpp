@@ -10,12 +10,15 @@
 
 int main()
 {
+    // 输出文件名称
     std::string name = "X52";
+    // 基于屈服极限的参数列表
     Params X52_SMYS = { 6.3, 462.6, 6.0, 200.0, 435.5 };
+	// 基于强度极限的参数列表
     Params X52_UTS = { 6.3, 462.6, 6.0, 200.0, 530.0 };
 
+    // 定义行类型
     using RowParams = std::vector<std::variant<double, std::string>>;
-
     RowParams ASMEB31G2009_res_list = { "ASMEB31G2009" };
     RowParams RSTRENG085dL_res_list = { "RSTRENG085dL" };
     RowParams PCORRC_res_list = { "PCORRC" };
@@ -24,6 +27,7 @@ int main()
     RowParams Netto_res_list = { "Netto" };
     RowParams RAM_PIPE_REQUAL_res_list = { "RAM_PIPE_REQUAL" };
 
+	// 定义多行数据，存储指针
     std::vector<RowParams*> rows;
     rows.push_back(&ASMEB31G2009_res_list );
     rows.push_back(&RSTRENG085dL_res_list );
@@ -33,6 +37,7 @@ int main()
     rows.push_back(&Netto_res_list );
     rows.push_back(&RAM_PIPE_REQUAL_res_list );
 
+	// 定义缺陷深度的变化范围
     std::vector<double> t = { 1, 2, 3, 4, 5, 6 };
     for (size_t i = 0; i < t.size(); i++)
     {
@@ -62,14 +67,12 @@ int main()
         RAM_PIPE_REQUAL_res_list.push_back(context.executeStrategy(X52_UTS));
     }
     
-
+    // 写入文件
     try {
         // 创建 CSVFileWriter 对象
         CSVFileWriter csvWriter(name + ".csv");
-
         RowParams header = { "method"};
         header.insert(header.end(), t.begin(), t.end());
-
         // 写入表头
         csvWriter.writeHeader(header);
 
